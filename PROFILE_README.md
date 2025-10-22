@@ -14,7 +14,7 @@ Back-end & front-end development (Python, Node.js, REST, Docker, MongoDB).
 ### Links
 - GitHub: https://github.com/xavierdscott01
 - Website/Portfolio: _(add link)_
-- LinkedIn: _(add link)_
+- LinkedIn: https://www.linkedin.com/in/xavier-d-scott01
 
 ---
 
