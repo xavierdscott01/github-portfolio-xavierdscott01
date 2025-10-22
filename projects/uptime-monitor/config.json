@@ -1,0 +1,10 @@
+{
+  "targets": [
+    "https://example.com",
+    "https://httpstat.us/200",
+    "https://httpstat.us/503"
+  ],
+  "intervalMs": 60000,
+  "timeoutMs": 5000,
+  "historyLimit": 200
+}

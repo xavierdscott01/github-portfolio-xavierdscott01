@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Support Ticket Dashboard</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 2rem; }
+    h1 { margin-bottom: .25rem; }
+    .meta { color: #555; margin-bottom: 1rem; }
+    .controls { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .card { border: 1px solid #e5e7eb; border-radius: .75rem; padding: 1rem; margin-bottom: .75rem; }
+    .pill { display: inline-block; padding: .15rem .5rem; border-radius: 999px; border: 1px solid #e5e7eb; font-size: .8rem; }
+    input, select { padding: .5rem; border-radius: .5rem; border: 1px solid #e5e7eb; }
+    table { width: 100%; border-collapse: collapse; margin-top: .5rem; }
+    th, td { text-align: left; padding: .5rem; border-bottom: 1px solid #f0f0f0; }
+    .status-open { color: #b45309; }
+    .status-closed { color: #059669; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Support Ticket Dashboard</h1>
+    <div class="meta">Filter and search sample tickets — no backend required.</div>
+  </header>
+
+  <section class="controls">
+    <input id="q" type="search" placeholder="Search subject or customer..." />
+    <select id="status">
+      <option value="">All Statuses</option>
+      <option value="open">Open</option>
+      <option value="closed">Closed</option>
+    </select>
+    <select id="priority">
+      <option value="">All Priorities</option>
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+    <span class="pill" id="count"></span>
+  </section>
+
+  <section id="list"></section>
+
+  <script>
+    const tickets = [
+      { id: "TCK-001", customer: "Acme Co", subject: "Cannot log in", status: "open", priority: "high", updated: "2025-10-10" },
+      { id: "TCK-002", customer: "Bright Retail", subject: "Email not syncing", status: "open", priority: "medium", updated: "2025-10-08" },
+      { id: "TCK-003", customer: "Nimbus", subject: "Password reset complete", status: "closed", priority: "low", updated: "2025-10-01" },
+      { id: "TCK-004", customer: "Kestrel LLC", subject: "Webhook failing intermittently", status: "open", priority: "high", updated: "2025-10-15" },
+      { id: "TCK-005", customer: "Orchid Health", subject: "SSO misconfiguration", status: "closed", priority: "medium", updated: "2025-09-29" },
+    ];
+
+    const q = document.getElementById('q');
+    const status = document.getElementById('status');
+    const priority = document.getElementById('priority');
+    const list = document.getElementById('list');
+    const count = document.getElementById('count');
+
+    function render() {
+      const term = q.value.toLowerCase();
+      const s = status.value;
+      const p = priority.value;
+      const filtered = tickets.filter(t => {
+        const matchesTerm = !term || t.subject.toLowerCase().includes(term) || t.customer.toLowerCase().includes(term);
+        const matchesStatus = !s || t.status === s;
+        const matchesPriority = !p || t.priority === p;
+        return matchesTerm && matchesStatus && matchesPriority;
+      });
+
+      list.innerHTML = filtered.map(t => `
+        <div class="card">
+          <strong>${t.id}</strong> — ${t.subject}<br/>
+          <small>${t.customer} • <span class="status-${t.status}">${t.status.toUpperCase()}</span> • ${t.priority} • updated ${t.updated}</small>
+          <table>
+            <tr><th>Customer</th><td>${t.customer}</td></tr>
+            <tr><th>Status</th><td>${t.status}</td></tr>
+            <tr><th>Priority</th><td>${t.priority}</td></tr>
+            <tr><th>Last Updated</th><td>${t.updated}</td></tr>
+          </table>
+        </div>
+      `).join('');
+
+      count.textContent = `${filtered.length} / ${tickets.length} tickets`;
+    }
+
+    q.addEventListener('input', render);
+    status.addEventListener('change', render);
+    priority.addEventListener('change', render);
+    render();
+  </script>
+</body>
+</html>

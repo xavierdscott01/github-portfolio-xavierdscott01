@@ -1,0 +1,14 @@
+{
+  "name": "uptime-monitor",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "watch": "node index.js --watch",
+    "lint": "node -e \"process.exit(0)\""
+  },
+  "dependencies": {
+    "axios": "^1.7.7"
+  }
+}
